@@ -1,0 +1,22 @@
+TabGroupie is a plugin for pentactyl. It allows you to create tabgroups,
+rename them and move the currently use tab from group to group
+with pentadactyl.
+
+under constuction:
+I'm not yet done. There are still very hard bugs in the code.
+Plase be careful. It is very probaly your browser will crash,
+but I promise: I'm about to fix these problems.
+
+    
+install:
+Just copy the TabGroupie.js to ~/.pentadactyl/plugins/ (on Windows: %USERPROFILE%\pentadactyl\plugin)
+and it will work with these tree commands:
+
+    changegroup [TARGETGROUPTITLE]
+    newgroup [NEWGROUPNAME]
+    rename [OLDNAME] [NEWNAME]
+    
+after restarting pentadactyl and have fun with your TabGroupie.
+
+uninstall:
+Just remove TabGroupie.js from ~/.pentadactyl/plugin (on Windows: %USERPROFILE%\pentadactyl\plugin).
