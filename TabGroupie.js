@@ -2,9 +2,9 @@
 XML.ignoreWhitespace = false;
 XML.prettyPrinting   = false;
 var INFO =
-<plugin name="setTabGroup" version="0.1"
+<plugin name="TapGroupie" version="0.1"
         href="http://dactyl.sf.net/pentadactyl/plugins#setTabGroup"
-        summary="setTabGroup"
+        summary="set your Tabgroups with pentadactyl"
         xmlns={NS}>
     <author email="hans.orter@gmx.de">Eri!</author>
     <license href="http://opensource.org/licenses/mit-license.php">MIT</license>
@@ -18,12 +18,16 @@ var INFO =
         <discription>
             <p>
                 To set a name to a exsisting group use
-                " [CURRENT_GROUPNAME] [NEW_GROUPNAME]".
+                "rename [CURRENT_GROUPNAME] [NEW_GROUPNAME]".
             </p>
             <p>
                  A groupname, that is not listed, will be handled as a new group
                  with a new name.
-                 " [NEW_GROUPNAME]"
+                 "newgroup [NEW_GROUPNAME]"
+            </p>
+            <p>
+                To move the current tab into another group use
+                "changegroup [TARGETGROUPTITLE]"
             </p>
         </discription>
      </item>
@@ -34,21 +38,25 @@ var INFO =
 
 //######################## Gehversuche ############################
 
-var TabGroupie = {
+let TabGroupie = {
     init: function init(){
-        if (!("_groups" in tabs))
-            window.TabView.init();
-        
-        try{
-            this.TabGroups = new Array();
-            for (let x in tabs._groups.GroupItems.groupItems){
-                let cur = tabs._groups.GroupItems.groupItems[x];
-                let group = {"id": cur.id, "title": cur.getTitle()};
-                this.TabGroups.push(group);
+        if (!("_groups" in tabs)){
+            if (window.TabView && TabView._initFrame)
+                TabView._initFrame();
+
+            let iframe = document.getElementById("tab-view");
+            tabs._groups = iframe ? iframe.contentWindow : null;
+            if (tabs._groups){
+                util.waitFor(function () tabs._groups.TabItems, tabs);
             }
-        }catch(err){
-            dactyl.echoerr("FATAL - TabGroupie-plugin crashed");
         }
+        
+        this.TabGroups = new Array();
+        for (let x in tabs._groups.GroupItems.groupItems){
+            let cur = tabs._groups.GroupItems.groupItems[x];
+            let group = {"id": cur.id, "title": cur.getTitle()};
+            this.TabGroups.push(group);
+        }        
     },
     
     
@@ -85,28 +93,46 @@ var TabGroupie = {
 
 
     newTabGroup: function newTabGroup(title){
-       this.crateGroup(title, false);
+       this.createGroup(title, false);
     },
 
 
     createGroup: function createGroup(title, current){
-         let tab = (current != null) ? window.gBrowser.selectedTab._tabViewTabItem 
-                            : window.gBrowser.addTab(prefs.get("browser.startup.homepage"));
+         let tab = (current != false) ? window.gBrowser.selectedTab 
+                                 : window.gBrowser.addTab(prefs.get("browser.startup.homepage"));
 
         let newGroup = tabs._groups.GroupItems.newGroup();
         newGroup.setTitle(title);
-        TabView.moveTabTo(tab, newGroup.id);
+        TabView.moveTabTo(tab._tabViewTabItem , newGroup.id);
         TabView.hide();
         return newGroup.id;
     }
 }
 
+try{
+    TabGroupie.init();
+}
+catch (err){
+    dactyl.echoerr("FATAL - Init failed");
+}
 
-TabGroupie.init();
-group.commands.add(["tabgroup-change", "tgc"],
-                    "Change current Tab to another Group", 
+group.commands.add(["chan[gegroup]", "cg"],
+                    "Change current tab to another Group.", 
                     function (args){
                         TabGroupie.changeGroup("" + args[0]);
                     },
-                    { argCount: "1"});
-                 
+                    {argCount: "1"});
+                    
+group.commands.add(["ren[ame]", "rn"],
+                    "Change the title of a Group",
+                    function (args){
+                        TabGroupie.changeTitle("" + args[0], "" + args[1]);
+                    },
+                    {argCount: "2"});
+
+group.commands.add(["new[group]", "ng"],
+                    "add a new tabgroup",
+                    function (args){
+                        TabGroupie.newTabGroup( "" + args[0]);
+                    },
+                    {argCount: "1"});
