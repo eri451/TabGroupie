@@ -98,12 +98,12 @@ let TabGroupie = {
 
 
     createGroup: function createGroup(title, current){
-         let tab = (current != false) ? window.gBrowser.selectedTab 
+         let tab = (current == true) ? window.gBrowser.selectedTab 
                                  : window.gBrowser.addTab(prefs.get("browser.startup.homepage"));
 
         let newGroup = tabs._groups.GroupItems.newGroup();
         newGroup.setTitle(title);
-        TabView.moveTabTo(tab._tabViewTabItem , newGroup.id);
+        TabView.moveTabTo(tab, newGroup.id);
         TabView.hide();
         return newGroup.id;
     }
