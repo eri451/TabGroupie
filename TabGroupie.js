@@ -55,8 +55,13 @@ let TabGroupie = {
         
         this.TabGroups = new Array();
         for (let x in tabs._groups.GroupItems.groupItems){
-            let cur = tabs._groups.GroupItems.groupItems[x];
-            let group = {"id": cur.id, "title": cur.getTitle()};
+            if (tabs._groups.GroupItems.groupItems[x]._children.length === 0){
+                tabs._groups.GroupItems.groupItems[x].close();
+                continue;
+            }
+            let group = {"id":    tabs._groups.GroupItems.groupItems[x].id,
+                         "title": tabs._groups.GroupItems.groupItems[x].getTitle()
+                        };
             this.TabGroups.push(group);
         }        
     },
@@ -78,13 +83,14 @@ let TabGroupie = {
     changeGroup: function changeGroup(TargetGroupTitle){
         let activeTab = window.gBrowser.selectedTab;
         let targetGroupId = this.getIdByTitle(TargetGroupTitle);
-        
-//TODO delete empty groups
             
-        if (targetGroupId != null){
+        if (targetGroupId != null){ 
             TabView.moveTabTo(activeTab, targetGroupId);
             TabView.hide();
         }
+        
+        if (tabs._groups.GroupItems.getNextGroupItemTab(true).parent._children.length === 0)
+            tabs._groups.GroupItems.getNextGroupItemTab(true).parent.close();
     },
 
 
@@ -105,7 +111,6 @@ let TabGroupie = {
          let tab = (current == true) ? window.gBrowser.selectedTab 
                                  : window.gBrowser.addTab(prefs.get("browser.startup.homepage"));
 
-        window.gBrowser.selectedTab = tab;
         let newGroup = tabs._groups.GroupItems.newGroup();
         newGroup.setTitle(title);
         TabView.moveTabTo(tab, newGroup.id);
@@ -126,6 +131,7 @@ group.commands.add(["chan[gegroup]", "cg"],
                     "Change current tab to another Group.", 
                     function (args){
                         TabGroupie.changeGroup("" + args[0]);
+                        TabGroupie.init();
                     },
                     {argCount: "1"});
                     
@@ -133,6 +139,7 @@ group.commands.add(["ren[ame]", "rn"],
                     "Change the title of a Group",
                     function (args){
                         TabGroupie.changeTitle("" + args[0], "" + args[1]);
+                        TabGroupie.init();
                     },
                     {argCount: "2"});
 
@@ -140,5 +147,6 @@ group.commands.add(["new[group]", "ng"],
                     "add a new tabgroup",
                     function (args){
                         TabGroupie.newTabGroup( "" + args[0]);
+                        TabGroupie.init();
                     },
                     {argCount: "1"});
