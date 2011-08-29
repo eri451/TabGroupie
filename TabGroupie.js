@@ -3,40 +3,42 @@ XML.ignoreWhitespace = false;
 XML.prettyPrinting   = false;
 var INFO =
 <plugin name="TapGroupie" version="0.1"
-        href="http://dactyl.sf.net/pentadactyl/plugins#setTabGroup"
-        summary="set your Tabgroups with pentadactyl"
+        href="https://github.com/eri451/TabGroupie"
+        summary="TabGroupie Plugin"
         xmlns={NS}>
     <author email="hans.orter@gmx.de">Eri!</author>
     <license href="http://opensource.org/licenses/mit-license.php">MIT</license>
     <project name="Pentadactyl" min-version="1.0b7.2"/>
     <p>
-        This Plugin allows you to rename and set your tabgroups
+        This plugin allows you to create tabgroups,
+        rename them and move the currently use tab from group to group
+        with pentadactyl.
     </p>
     <item>
-        <tags>:tg :tabgroupie </tags>
-        <spec>:tabgroupie <oa>name</oa> <oa>useragent</oa></spec>
-        <discription>
-            <p>
-                To set a name to a exsisting group use
-                "rename [CURRENT_GROUPNAME] [NEW_GROUPNAME]".
-            </p>
-            <p>
-                 A groupname, that is not listed, will be handled as a new group
-                 with a new name.
-                 "newgroup [NEW_GROUPNAME]"
-            </p>
-            <p>
-                To move the current tab into another group use
-                "changegroup [TARGETGROUPTITLE]"
-            </p>
-        </discription>
-     </item>
+        <tags>:ren :rename </tags>
+        <spec>:rename <oa>current_name</oa> <oa>new_name</oa></spec>
+        <description>
+            To set a name to a exsisting group use  
+        </description>
+    </item>
+    <item>
+       <tags>:new :newgroup</tags>
+       <spec>:newgroup <oa>newgroupname</oa></spec>
+       <description>
+            Create a new tabgroup.
+       </description>
+    </item>
+    <item>
+        <tags>:chan :changegroup</tags>
+        <spec>:changegroup <oa>targetgroupname</oa></spec>
+        <description>
+            A groupname, that is not listed, will be handled as a new group
+            with a new name assumed you confirm the messagebox.
+        </description>    
+    </item>
 </plugin>;
 
 
-
-
-//######################## Gehversuche ############################
 
 let TabGroupie = {
     init: function init(){
@@ -77,10 +79,12 @@ let TabGroupie = {
         let activeTab = window.gBrowser.selectedTab;
         let targetGroupId = this.getIdByTitle(TargetGroupTitle);
         
-        if (targetGroupId != null)
+//TODO delete empty groups
+            
+        if (targetGroupId != null){
             TabView.moveTabTo(activeTab, targetGroupId);
-        
-        
+            TabView.hide();
+        }
     },
 
 
@@ -101,10 +105,12 @@ let TabGroupie = {
          let tab = (current == true) ? window.gBrowser.selectedTab 
                                  : window.gBrowser.addTab(prefs.get("browser.startup.homepage"));
 
+        window.gBrowser.selectedTab = tab;
         let newGroup = tabs._groups.GroupItems.newGroup();
         newGroup.setTitle(title);
         TabView.moveTabTo(tab, newGroup.id);
         TabView.hide();
+//TODO focus to new created Group
         return newGroup.id;
     }
 }
