@@ -128,8 +128,12 @@ let TabGroupie = {
     
     deleter: function deleter(title){
         for (let i in tabs._groups.GroupItems.groupItems){
-            if (tabs._groups.GroupItems.groupItems[i].id === this.getIdByTitle(title))
-                tabs._groups.GroupItems.groupItems[i].close();
+            if (tabs._groups.GroupItems.groupItems[i].id === this.getIdByTitle(title)){
+                for (let x in tabs._groups.GroupItems.groupItems[i]._children){
+                    tabs._groups.GroupItems.groupItems[i]._children[x].close();
+                }
+            tabs._groups.GroupItems.groupItems[i].close();
+            }
         }
     }
 }
