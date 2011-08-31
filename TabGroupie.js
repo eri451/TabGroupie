@@ -15,25 +15,32 @@ var INFO =
         with pentadactyl.
     </p>
     <item>
-        <tags>:ren :rename </tags>
-        <spec>:rename <oa>current_name</oa> <oa>new_name</oa></spec>
+        <tags>:rtg :renametabgroup </tags>
+        <spec>:renametabgroup <oa>current_name</oa> <oa>new_name</oa></spec>
         <description>
             To set a name to a exsisting group use  
         </description>
     </item>
     <item>
-       <tags>:new :newgroup</tags>
-       <spec>:newgroup <oa>newgroupname</oa></spec>
+       <tags>:ntg :newtabgroup</tags>
+       <spec>:newtabgroup <oa>newgroupname</oa></spec>
        <description>
             Create a new tabgroup.
        </description>
     </item>
     <item>
-        <tags>:chan :changegroup</tags>
-        <spec>:changegroup <oa>targetgroupname</oa></spec>
+        <tags>:ctg :changetabgroup</tags>
+        <spec>:changetabgroup <oa>targetgroupname</oa></spec>
         <description>
             A groupname, that is not listed, will be handled as a new group
             with a new name assumed you confirm the messagebox.
+        </description>    
+    </item>
+    <item>
+        <tags>:dtg :deltabgroup</tags>
+        <spec>:deltabgroup <oa>targetgroupname</oa></spec>
+        <description>
+            delete a TabGroup incl. its items
         </description>    
     </item>
 </plugin>;
@@ -107,12 +114,13 @@ let TabGroupie = {
 
 
     newTabGroup: function newTabGroup(title){
-       this.createGroup(title, false);
+        this.createGroup(title, false);
+        window.gBrowser.selectTabAtIndex(tabs.index(this.createGroup.tab, "allTabs"));
     },
 
 
     createGroup: function createGroup(title, current){
-         let tab = (current == true) ? window.gBrowser.selectedTab 
+        let tab = (current == true) ? window.gBrowser.selectedTab 
                                  : window.gBrowser.addTab(prefs.get("browser.startup.homepage"));
 
         let newGroup = tabs._groups.GroupItems.newGroup();
@@ -120,7 +128,6 @@ let TabGroupie = {
         TabView.moveTabTo(tab, newGroup.id);
         TabView.hide();
         
-//        window.gBrowser.selectTabAtIndex(tabs.index(tab, "allTabs"));
 //TODO focus to new created Group
         return newGroup.id;
     },
@@ -135,7 +142,8 @@ let TabGroupie = {
             tabs._groups.GroupItems.groupItems[i].close();
             }
         }
-    }
+    },
+    
 }
 
 try{
