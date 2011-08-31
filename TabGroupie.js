@@ -99,9 +99,6 @@ let TabGroupie = {
             TabView.moveTabTo(activeTab, targetGroupId);
             TabView.hide();
         }
-        
-        if (tabs._groups.GroupItems.getNextGroupItemTab(true).parent._children.length === 0)
-            tabs._groups.GroupItems.getNextGroupItemTab(true).parent.close();
     },
 
 
