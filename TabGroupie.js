@@ -42,36 +42,40 @@ var INFO =
 
 let TabGroupie = {
     init: function init(){
-        if (!("_groups" in tabs)){
-            if (window.TabView && TabView._initFrame)
-                TabView._initFrame();
+        try{
+            if (!("_groups" in tabs)){
+                if (window.TabView && TabView._initFrame)
+                    TabView._initFrame();
 
-            let iframe = document.getElementById("tab-view");
-            tabs._groups = iframe ? iframe.contentWindow : null;
-            if (tabs._groups){
-                util.waitFor(function () tabs._groups.TabItems, tabs);
+                let iframe = document.getElementById("tab-view");
+                tabs._groups = iframe ? iframe.contentWindow : null;
+                if (tabs._groups){
+                    util.waitFor(function () tabs._groups.TabItems, tabs);
+                }
+            }
+            
+            this.TabGroups = new Array();
+            for (let x in tabs._groups.GroupItems.groupItems){
+                if (tabs._groups.GroupItems.groupItems[x]._children.length === 0){
+                    tabs._groups.GroupItems.groupItems[x].close();
+                    continue;
+                }
+                let group = {"id":    tabs._groups.GroupItems.groupItems[x].id,
+                             "title": tabs._groups.GroupItems.groupItems[x].getTitle()
+                            };
+                this.TabGroups.push(group);
             }
         }
-        
-        this.TabGroups = new Array();
-        for (let x in tabs._groups.GroupItems.groupItems){
-            if (tabs._groups.GroupItems.groupItems[x]._children.length === 0){
-                tabs._groups.GroupItems.groupItems[x].close();
-                continue;
-            }
-            let group = {"id":    tabs._groups.GroupItems.groupItems[x].id,
-                         "title": tabs._groups.GroupItems.groupItems[x].getTitle()
-                        };
-            this.TabGroups.push(group);
-        }        
+        catch(err){
+            dactyl.echoerr("FATAL - Init failed");
+        }    
     },
     
     
     getIdByTitle: function getIdByTitle(pattern){
         for (let i in this.TabGroups){
-            if (this.TabGroups[i].title === pattern){
+            if (this.TabGroups[i].title === pattern)
                 return this.TabGroups[i].id;
-            }
         }
         
         if (confirm("This Group does not yet exists.\nDo you want to create a new Group with this title?"))
@@ -84,7 +88,7 @@ let TabGroupie = {
         let activeTab = window.gBrowser.selectedTab;
         let targetGroupId = this.getIdByTitle(TargetGroupTitle);
             
-        if (targetGroupId != null){ 
+        if (targetGroupId != null){
             TabView.moveTabTo(activeTab, targetGroupId);
             TabView.hide();
         }
@@ -115,8 +119,18 @@ let TabGroupie = {
         newGroup.setTitle(title);
         TabView.moveTabTo(tab, newGroup.id);
         TabView.hide();
+        
+//        window.gBrowser.selectTabAtIndex(tabs.index(tab, "allTabs"));
 //TODO focus to new created Group
         return newGroup.id;
+    },
+    
+    
+    deleter: function deleter(title){
+        for (let i in tabs._groups.GroupItems.groupItems){
+            if (tabs._groups.GroupItems.groupItems[i].id === this.getIdByTitle(title))
+                tabs._groups.GroupItems.groupItems[i].close();
+        }
     }
 }
 
@@ -127,7 +141,7 @@ catch (err){
     dactyl.echoerr("FATAL - Init failed");
 }
 
-group.commands.add(["chan[gegroup]", "cg"],
+group.commands.add(["chan[getabgroup]", "ctg"],
                     "Change current tab to another Group.", 
                     function (args){
                         TabGroupie.changeGroup("" + args[0]);
@@ -135,7 +149,7 @@ group.commands.add(["chan[gegroup]", "cg"],
                     },
                     {argCount: "1"});
                     
-group.commands.add(["ren[ame]", "rn"],
+group.commands.add(["ren[ametabgroup]", "rtg"],
                     "Change the title of a Group",
                     function (args){
                         TabGroupie.changeTitle("" + args[0], "" + args[1]);
@@ -143,10 +157,18 @@ group.commands.add(["ren[ame]", "rn"],
                     },
                     {argCount: "2"});
 
-group.commands.add(["new[group]", "ng"],
+group.commands.add(["new[tabgroup]", "ntg"],
                     "add a new tabgroup",
                     function (args){
                         TabGroupie.newTabGroup( "" + args[0]);
+                        TabGroupie.init();
+                    },
+                    {argCount: "1"});
+                    
+group.commands.add(["delt[abgroup]", "dtg"],
+                    "delete a TabGroup incl. its items",
+                    function (args) {
+                        TabGroupie.deleter("" + args[0]);
                         TabGroupie.init();
                     },
                     {argCount: "1"});
