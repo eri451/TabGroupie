@@ -3,20 +3,21 @@ rename them and move the currently use tab from group to group
 with pentadactyl.
 
 under constuction:
-I'm not yet done. There are still very hard bugs in the code.
-Plase be careful. It is very probable, that your browser will crash,
-but I promise: I'm about to fix these problems.
+I'm not yet done. There are still a lot of things to do
+e.g. Tabkey-Completion.
+Plase be careful.
 
 requires:
-Firefox 4.0* (or similar)
+Firefox 4.0 (or similar) or higher
     
 install:
 Just copy the TabGroupie.js to ~/.pentadactyl/plugins/ (on Windows: %USERPROFILE%\pentadactyl\plugins)
-and it will work with these tree commands:
+and it will work with these four commands:
 
-    changegroup [TARGETGROUPTITLE]
-    newgroup [NEWGROUPNAME]
-    rename [OLDNAME] [NEWNAME]
+    changetabgroup [TARGETGROUPTITLE]
+    newtabgroup [NEWGROUPTITLE]
+    renametabgroup [OLDTITLE] [NEWTITLE]
+    deltabgroup [GROUPTITLE]
     
 after restarting pentadactyl and have fun with your TabGroupie.
 
