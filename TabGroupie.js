@@ -112,7 +112,6 @@ let TabGroupie = {
 
     newTabGroup: function newTabGroup(title){
         this.createGroup(title, false);
-        window.gBrowser.selectTabAtIndex(tabs.index(this.createGroup.tab, "allTabs"));
     },
 
 
@@ -124,7 +123,6 @@ let TabGroupie = {
         newGroup.setTitle(title);
         TabView.moveTabTo(tab, newGroup.id);
         TabView.hide();
-        
 //TODO focus to new created Group
         return newGroup.id;
     },
@@ -154,6 +152,7 @@ group.commands.add(["chan[getabgroup]", "ctg"],
                     "Change current tab to another Group.", 
                     function (args){
                         TabGroupie.changeGroup("" + args[0]);
+                        tabs.selectAlternateTab();
                         TabGroupie.init();
                     },
                     {argCount: "1"});
