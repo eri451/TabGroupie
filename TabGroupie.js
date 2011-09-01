@@ -123,7 +123,6 @@ let TabGroupie = {
         newGroup.setTitle(title);
         TabView.moveTabTo(tab, newGroup.id);
         TabView.hide();
-//TODO focus to new created Group
         return newGroup.id;
     },
     
@@ -169,6 +168,8 @@ group.commands.add(["new[tabgroup]", "ntg"],
                     "add a new tabgroup",
                     function (args){
                         TabGroupie.newTabGroup( "" + args[0]);
+                        window.gBrowser.selectedTab = 
+                                    tabs.allTabs[tabs.allTabs.length - 1];
                         TabGroupie.init();
                     },
                     {argCount: "1"});
