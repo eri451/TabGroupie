@@ -85,9 +85,16 @@ let TabGroupie = {
                 return this.TabGroups[i].id;
         }
         
-        if (confirm("This Group does not yet exists.\nDo you want to create a new Group with this title?"))
-            return this.createGroup(pattern , true);
-        return null;
+        commandline.input("Group does not exist. Create? [Y/n] ", check, {argCount: "1"});
+     
+        function check(args){
+            if ("" + args[0] === "y" || "" + args[0] === ""){
+                let id = TabGroupie.createGroup(pattern , true);
+                tabs.selectAlternateTab();            
+                return id;
+            }
+            return null;
+        }
     },
 
 
@@ -151,7 +158,6 @@ group.commands.add(["chan[getabgroup]", "ctg"],
                     "Change current tab to another Group.", 
                     function (args){
                         TabGroupie.changeGroup("" + args[0]);
-                        tabs.selectAlternateTab();
                         TabGroupie.init();
                     },
                     {argCount: "1"});

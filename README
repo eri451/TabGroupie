@@ -22,4 +22,4 @@ and it will work with these four commands:
 after restarting pentadactyl and have fun with your TabGroupie.
 
 uninstall:
-Just remove TabGroupie.js from ~/.pentadactyl/plugin (on Windows: %USERPROFILE%\pentadactyl\plugin).
+Just remove TabGroupie.js from ~/.pentadactyl/plugins (on Windows: %USERPROFILE%\pentadactyl\plugins).
