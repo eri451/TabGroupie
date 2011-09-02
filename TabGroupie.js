@@ -88,7 +88,7 @@ let TabGroupie = {
         commandline.input("Group does not exist. Create? [Y/n] ", check, {argCount: "1"});
      
         function check(args){
-            if ("" + args[0] === "y" || "" + args[0] === ""){
+            if ("" + args[0] === "y" || args.length === 0){
                 let id = TabGroupie.createGroup(pattern , true);
                 tabs.selectAlternateTab();            
                 return id;
