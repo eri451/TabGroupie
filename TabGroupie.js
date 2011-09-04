@@ -86,15 +86,16 @@ let TabGroupie = {
         }
         
         commandline.input("Group does not exist. Create? [Y/n] ", check, {argCount: "1"});
-     
+
         function check(args){
-            if ("" + args[0] === "y" || args.length === 0){
-                let id = TabGroupie.createGroup(pattern , true);
-                tabs.selectAlternateTab();            
-                return id;
+            if (args.length === 0 || "" + args[0] === "y" || "" + args[0] === "Y"){
+                TabView.moveTabTo(window.gBrowser.selectedTab
+                                 ,TabGroupie.createGroup(pattern));
+                TabView.hide();
+                tabs.selectAlternateTab();
             }
-            return null;
         }
+        return null;
     },
 
 
@@ -105,6 +106,7 @@ let TabGroupie = {
         if (targetGroupId != null){
             TabView.moveTabTo(activeTab, targetGroupId);
             TabView.hide();
+            tabs.selectAlternateTab();
         }
     },
 
@@ -118,18 +120,16 @@ let TabGroupie = {
 
 
     newTabGroup: function newTabGroup(title){
-        this.createGroup(title, false);
+        let tab = window.gBrowser.addTab(prefs.get("browser.startup.homepage"));
+        TabView.moveTabTo(tab, this.createGroup(title));
+        TabView.hide();
+
     },
 
 
-    createGroup: function createGroup(title, current){
-        let tab = (current == true) ? window.gBrowser.selectedTab 
-                                 : window.gBrowser.addTab(prefs.get("browser.startup.homepage"));
-
+    createGroup: function createGroup(title){
         let newGroup = tabs._groups.GroupItems.newGroup();
         newGroup.setTitle(title);
-        TabView.moveTabTo(tab, newGroup.id);
-        TabView.hide();
         return newGroup.id;
     },
     
