@@ -85,13 +85,19 @@ let TabGroupie = {
                 return this.TabGroups[i].id;
         }
         
-        commandline.input("Group does not exist. Create? [Y/n] ", check, {argCount: "1"});
+        commandline.input("Group does not exist. Create? [Y/n/b] ", check, {argCount: "1"});
 
         function check(args){
-            if (args.length === 0 || "" + args[0] === "y" || "" + args[0] === "Y"){
+            if (args.length === 0 
+                || "" + args[0] === "y"
+                || "" + args[0] === "Y"
+                || "" + args[0] === "b" ){
                 TabView.moveTabTo(window.gBrowser.selectedTab
                                  ,TabGroupie.createGroup(pattern));
                 TabView.hide();
+                if ("" + args[0] === "b")
+                    return null;
+
                 tabs.selectAlternateTab();
             }
         }

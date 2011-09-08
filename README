@@ -16,7 +16,7 @@ and it will work with these four commands:
 
     changetabgroup [TARGETGROUPTITLE]
     newtabgroup [NEWGROUPTITLE]
-    renametabgroup [OLDTITLE] [NEWTITLE]
+    renametabgroup [NEWTITLE]
     deltabgroup [GROUPTITLE]
     
 after restarting pentadactyl and have fun with your TabGroupie.
