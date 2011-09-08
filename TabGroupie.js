@@ -111,11 +111,8 @@ let TabGroupie = {
     },
 
 
-    changeTitle: function changeTitle(curTitle, newTitle){
-        let current = this.getIdByTitle(curTitle);
-        
-        if (current != null)
-            tabs._groups.GroupItems.groupItem(current).setTitle(newTitle);
+    changeTitle: function changeTitle(newTitle){
+        window.gBrowser.selectedTab._tabViewTabItem.parent.setTitle(newTitle);
     },
 
 
@@ -160,15 +157,22 @@ group.commands.add(["chan[getabgroup]", "ctg"],
                         TabGroupie.changeGroup("" + args[0]);
                         TabGroupie.init();
                     },
-                    {argCount: "1"});
+                    {argCount: "1",
+//                     completer: function (context) {
+//                        let v;
+//                        context.completions = 
+//                            [[, ""]].concat(
+//                            [[v.title] for (v in TabGroupie.TabGroups)]);
+//                         },
+                    });
                     
 group.commands.add(["ren[ametabgroup]", "rtg"],
                     "Change the title of a Group",
                     function (args){
-                        TabGroupie.changeTitle("" + args[0], "" + args[1]);
+                        TabGroupie.changeTitle("" + args[0]);
                         TabGroupie.init();
                     },
-                    {argCount: "2"});
+                    {argCount: "1"});
 
 group.commands.add(["new[tabgroup]", "ntg"],
                     "add a new tabgroup",
