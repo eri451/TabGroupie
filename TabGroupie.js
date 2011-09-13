@@ -15,22 +15,22 @@ var INFO =
         with pentadactyl.
     </p>
     <item>
-        <tags>:tgt :tabgrouptitle </tags>
-        <spec>:tabgrouptitle <oa>newName</oa></spec>
+        <tags>:tgt :tgroup-title </tags>
+        <spec>:tgroup-title <oa>newName</oa></spec>
         <description>
             Sets a new title to the currently used group
         </description>
     </item>
     <item>
-       <tags>:tgn :tabgroupnew</tags>
-       <spec>:tabgroupnew <oa>newGroupname</oa></spec>
+       <tags>:tgn :tgroup-new</tags>
+       <spec>:tgroup-new <oa>newGroupname</oa></spec>
        <description>
             Create a new tabgroup.
        </description>
     </item>
     <item>
-        <tags>:tgc :tabgroupchange</tags>
-        <spec>:tabgroupchange <oa>targetGroup</oa></spec>
+        <tags>:tgc :tgroup-change</tags>
+        <spec>:tgroup-change <oa>targetGroup</oa></spec>
         <description>
             <p>
                 Changes the specified group for the tab that is
@@ -44,8 +44,8 @@ var INFO =
         </description>    
     </item>
     <item>
-        <tags>:tgd :tabgroupdelete</tags>
-        <spec>:tabgroupdelete <oa>GroupName</oa></spec>
+        <tags>:tgd :tgroup-delete</tags>
+        <spec>:tgroup-delete <oa>GroupName</oa></spec>
         <description>
             This is deleting the given tabgroup incl. its items.
         </description>    
@@ -164,7 +164,7 @@ catch (err){
     dactyl.echoerr("FATAL - Init failed");
 }
 
-group.commands.add(["tabgroupc[hange]", "tgc"],
+group.commands.add(["tgroup-c[hange]", "tgc"],
                     "Change current tab to another group.",
                     function (args){
                         TabGroupie.changeGroup("" + args[0]);
@@ -178,7 +178,7 @@ group.commands.add(["tabgroupc[hange]", "tgc"],
                         }
                     });
                     
-group.commands.add(["tabgroupt[itle]", "tgt"],
+group.commands.add(["tgroup-t[itle]", "tgt"],
                     "Change the title of the current group",
                     function (args){
                         TabGroupie.changeTitle("" + args[0]);
@@ -188,7 +188,7 @@ group.commands.add(["tabgroupt[itle]", "tgt"],
                         argCount: "1",
                     });
 
-group.commands.add(["tabgroupn[ew]", "tgn"],
+group.commands.add(["tgroup-n[ew]", "tgn"],
                     "add a new tabgroup",
                     function (args){
                         TabGroupie.newTabGroup( "" + args[0]);
@@ -200,7 +200,7 @@ group.commands.add(["tabgroupn[ew]", "tgn"],
                         argCount: "1",
                     });
                     
-group.commands.add(["tabgroupd[elete]", "tgd"],
+group.commands.add(["tgroup-d[elete]", "tgd"],
                     "delete a tabgroup incl. its items",
                     function (args) {
                         TabGroupie.deleter("" + args[0]);

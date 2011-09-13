@@ -12,10 +12,10 @@ install:
 Just copy the TabGroupie.js to ~/.pentadactyl/plugins/ (on Windows: %USERPROFILE%\pentadactyl\plugins)
 and it will work with these four commands:
 
-    tabgroupchange [TARGETGROUPTITLE]
-    tabgroupnew [NEWGROUPTITLE]
-    tabgrouptitle [NEWTITLE]
-    tabgroupdelete [GROUPTITLE]
+    tgroup-change [TARGETGROUPTITLE]
+    tgroup-new [NEWGROUPTITLE]
+    tgroup-title [NEWTITLE]
+    tgroup-delete [GROUPTITLE]
     
 after restarting pentadactyl.
 
