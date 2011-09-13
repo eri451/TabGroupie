@@ -2,7 +2,7 @@
 XML.ignoreWhitespace = false;
 XML.prettyPrinting   = false;
 var INFO =
-<plugin name="TapGroupie" version="0.1"
+<plugin name="TapGroupie" version="0.9"
         href="https://github.com/eri451/TabGroupie"
         summary="TabGroupie Plugin"
         xmlns={NS}>
@@ -11,36 +11,43 @@ var INFO =
     <project name="Pentadactyl" min-version="1.0b7.2"/>
     <p>
         This plugin allows you to create tabgroups,
-        rename them and move the currently use tab from group to group
+        rename or delete them and move the currently use tab from group to group
         with pentadactyl.
     </p>
     <item>
-        <tags>:rtg :renametabgroup </tags>
-        <spec>:renametabgroup <oa>current_name</oa> <oa>new_name</oa></spec>
+        <tags>:tgt :tabgrouptitle </tags>
+        <spec>:tabgrouptitle <oa>newName</oa></spec>
         <description>
-            To set a name to a exsisting group use  
+            Sets a new title to the currently used group
         </description>
     </item>
     <item>
-       <tags>:ntg :newtabgroup</tags>
-       <spec>:newtabgroup <oa>newgroupname</oa></spec>
+       <tags>:tgn :tabgroupnew</tags>
+       <spec>:tabgroupnew <oa>newGroupname</oa></spec>
        <description>
             Create a new tabgroup.
        </description>
     </item>
     <item>
-        <tags>:ctg :changetabgroup</tags>
-        <spec>:changetabgroup <oa>targetgroupname</oa></spec>
+        <tags>:tgc :tabgroupchange</tags>
+        <spec>:tabgroupchange <oa>targetGroup</oa></spec>
         <description>
-            A groupname, that is not listed, will be handled as a new group
-            with a new name assumed you confirm the messagebox.
+            <p>
+                Changes the specified group for the tab that is
+                open at this moment.
+            </p>
+            <p>
+                A groupname, that is not listed, will be handled as a new group
+                with a new name assumed you confirm the prompt.
+                [Y/n/b] is for yes(default), no and background.
+            </p>
         </description>    
     </item>
     <item>
-        <tags>:dtg :deltabgroup</tags>
-        <spec>:deltabgroup <oa>targetgroupname</oa></spec>
+        <tags>:tgd :tabgroupdelete</tags>
+        <spec>:tabgroupdelete <oa>GroupName</oa></spec>
         <description>
-            delete a TabGroup incl. its items
+            This is deleting the given tabgroup incl. its items.
         </description>    
     </item>
 </plugin>;
@@ -157,30 +164,31 @@ catch (err){
     dactyl.echoerr("FATAL - Init failed");
 }
 
-group.commands.add(["chan[getabgroup]", "ctg"],
-                    "Change current tab to another Group.", 
+group.commands.add(["tabgroupc[hange]", "tgc"],
+                    "Change current tab to another group.",
                     function (args){
                         TabGroupie.changeGroup("" + args[0]);
                         TabGroupie.init();
                     },
-                    {argCount: "1",
-//                     completer: function (context) {
-//                        let v;
-//                        context.completions = 
-//                            [[, ""]].concat(
-//                            [[v.title] for (v in TabGroupie.TabGroups)]);
-//                         },
+                    {
+                        argCount: "1",
+                        completer: function (context) {   //thanks to Kris Maglione
+                            context.keys = { text: "id", description: "title"};
+                            context.completions = TabGroupie.TabGroups;
+                        }
                     });
                     
-group.commands.add(["ren[ametabgroup]", "rtg"],
-                    "Change the title of a Group",
+group.commands.add(["tabgroupt[itle]", "tgt"],
+                    "Change the title of the current group",
                     function (args){
                         TabGroupie.changeTitle("" + args[0]);
                         TabGroupie.init();
                     },
-                    {argCount: "1"});
+                    {
+                        argCount: "1",
+                    });
 
-group.commands.add(["new[tabgroup]", "ntg"],
+group.commands.add(["tabgroupn[ew]", "tgn"],
                     "add a new tabgroup",
                     function (args){
                         TabGroupie.newTabGroup( "" + args[0]);
@@ -188,12 +196,20 @@ group.commands.add(["new[tabgroup]", "ntg"],
                                     tabs.allTabs[tabs.allTabs.length - 1];
                         TabGroupie.init();
                     },
-                    {argCount: "1"});
+                    {
+                        argCount: "1",
+                    });
                     
-group.commands.add(["delt[abgroup]", "dtg"],
-                    "delete a TabGroup incl. its items",
+group.commands.add(["tabgroupd[elete]", "tgd"],
+                    "delete a tabgroup incl. its items",
                     function (args) {
                         TabGroupie.deleter("" + args[0]);
                         TabGroupie.init();
                     },
-                    {argCount: "1"});
+                    {
+                        argCount: "1",
+                        completer: function (context) {   //thanks to Kris Maglione
+                            context.key = { text: "id", description: "title" };
+                            context.completions = TabGroupie.TabGroups;
+                        }
+                    });
