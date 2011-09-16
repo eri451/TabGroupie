@@ -173,7 +173,7 @@ group.commands.add(["tgroup-c[hange]", "tgc"],
                     {
                         argCount: "1",
                         completer: function (context) {   //thanks to Kris Maglione
-                            context.keys = { text: "id", description: "title"};
+                            context.keys = { text: "title", description: "id"};
                             context.completions = TabGroupie.TabGroups;
                         }
                     });
@@ -209,7 +209,7 @@ group.commands.add(["tgroup-d[elete]", "tgd"],
                     {
                         argCount: "1",
                         completer: function (context) {   //thanks to Kris Maglione
-                            context.key = { text: "id", description: "title" };
+                            context.key = { text: "title", description: "id" };
                             context.completions = TabGroupie.TabGroups;
                         }
                     });
