@@ -115,20 +115,26 @@ let TabGroupie = {
     changeGroup: function changeGroup(TargetGroupTitle){
         let activeTab = window.gBrowser.selectedTab;
         let targetGroupId = this.getIdByTitle(TargetGroupTitle);
-            
-        if (targetGroupId != null){
-            TabView.moveTabTo(activeTab, targetGroupId);
-            TabView.hide();
-        }
-        commandline.input("Switch to that Group? [Y/n] ", ask, {argCount: "1"});
-        
+         
         function ask(args){
             if (args.length === 0
                 || "" + args[0] === "y"
                 || "" + args[0] === "Y"){ tabs.selectAlternateTab();}
         }
-
-    },
+            
+        if (targetGroupId != null){
+            if (gBrowser.selectedTab._tabViewTabItem.parent._children.length > 1){
+                TabView.moveTabTo(activeTab, targetGroupId);
+                TabView.hide();
+                commandline.input("Switch to that Group? [Y/n] ", ask, {argCount: "1"})
+            }
+            else{
+                TabView.moveTabTo(activeTab, targetGroupId);
+                TabView.hide();
+                tabs.selectAlternateTab();
+            }
+        }
+   },
 
 
     changeTitle: function changeTitle(newTitle){
