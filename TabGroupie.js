@@ -119,8 +119,15 @@ let TabGroupie = {
         if (targetGroupId != null){
             TabView.moveTabTo(activeTab, targetGroupId);
             TabView.hide();
-            tabs.selectAlternateTab();
         }
+        commandline.input("Switch to that Group? [Y/n] ", ask, {argCount: "1"});
+        
+        function ask(args){
+            if (args.length === 0
+                || "" + args[0] === "y"
+                || "" + args[0] === "Y"){ tabs.selectAlternateTab();}
+        }
+
     },
 
 
