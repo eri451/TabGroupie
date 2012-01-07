@@ -1,4 +1,4 @@
-"use strict";
+/* "use strict"; */
 XML.ignoreWhitespace = false;
 XML.prettyPrinting   = false;
 var INFO =
@@ -123,7 +123,7 @@ let TabGroupie = {
         }
 
         if (targetGroupId != null){
-            if (gBrowser.selectedTab._tabViewTabItem.parent._children.length > 1){
+            if (activeTab._tabViewTabItem.parent._children.length > 1){
                 TabView.moveTabTo(activeTab, targetGroupId);
                 TabView.hide();
                 commandline.input("Switch to that Group? [Y/n] ", ask, {argCount: "1"})
@@ -194,11 +194,16 @@ group.commands.add(["tgroup-c[hange]", "tgc"],
 group.commands.add(["tgroup-t[itle]", "tgt"],
                     "Change the title of the current group",
                     function (args){
+						if (args.lenght===0){
+							alert("you're into it");
+							alert(window.gBrowser.selectedTab._tabViewTabItem.parent.getTitle());
+						}
+						alert(args);
                         TabGroupie.changeTitle("" + args[0]);
                         TabGroupie.init();
                     },
                     {
-                        argCount: "1",
+                        argCount: "0",
                     });
 
 group.commands.add(["tgroup-n[ew]", "tgn"],
