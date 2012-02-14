@@ -193,15 +193,10 @@ group.commands.add(["tgroup-c[hange]", "tgc"],
                             context.completions = TabGroupie.TabGroups;
                         }
                     });
-                    
+
 group.commands.add(["tgroup-t[itle]", "tgt"],
                     "Change the title of the current group",
                     function (args){
-						if (args.lenght===0){
-							alert("you're into it");
-							alert(window.gBrowser.selectedTab._tabViewTabItem.parent.getTitle());
-						}
-						alert(args);
                         TabGroupie.changeTitle("" + args[0]);
                         TabGroupie.init();
                     },
