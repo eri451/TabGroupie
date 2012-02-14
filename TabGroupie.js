@@ -37,11 +37,15 @@ var INFO =
                 open at this moment.
             </p>
             <p>
+                You can follow that tab by cofirming the massage by &lt;CR&gt;, Y, y.
+                If you not confirm the tab to the righthandside will be displayed.
+            </p>
+            <p>
                 A groupname, that is not listed, will be handled as a new group
                 with a new name assumed you confirm the prompt.
                 [Y/n/b] is for yes(default), no and background.
             </p>
-        </description>    
+        </description>
     </item>
     <item>
         <tags>:tgd :tgroup-delete</tags>
@@ -62,12 +66,12 @@ let TabGroupie = {
                     TabView._initFrame();
 
                 let iframe = document.getElementById("tab-view");
-                tabs._groups = iframe ? iframe.contentWindow : null;
+                tabs._groups = iframe ? iframe.contentWindow.GroupItems.groupItems : null;
                 if (tabs._groups){
                     util.waitFor(function () tabs._groups.TabItems, tabs);
                 }
             }
-            
+
             this.TabGroups = new Array();
             for (let x in tabs._groups.GroupItems.groupItems){
                 if (tabs._groups.GroupItems.groupItems[x]._children.length === 0){
@@ -82,16 +86,16 @@ let TabGroupie = {
         }
         catch(err){
             dactyl.echoerr("FATAL - Init failed");
-        }    
+        }
     },
-    
-    
+
+
     getIdByTitle: function getIdByTitle(pattern){
         for (let i in this.TabGroups){
             if (this.TabGroups[i].title === pattern)
                 return this.TabGroups[i].id;
         }
-        
+
         commandline.input("Group does not exist. Create? [Y/n/b] ", check, {argCount: "1"});
 
         function check(args){
@@ -155,8 +159,8 @@ let TabGroupie = {
         newGroup.setTitle(title);
         return newGroup.id;
     },
-    
-    
+
+
     deleter: function deleter(title){
         for (let i in tabs._groups.GroupItems.groupItems){
             if (tabs._groups.GroupItems.groupItems[i].id === this.getIdByTitle(title)){
@@ -167,7 +171,6 @@ let TabGroupie = {
             }
         }
     },
-    
 }
 
 try{
@@ -217,7 +220,7 @@ group.commands.add(["tgroup-n[ew]", "tgn"],
                     {
                         argCount: "1",
                     });
-                    
+
 group.commands.add(["tgroup-d[elete]", "tgd"],
                     "delete a tabgroup incl. its items",
                     function (args) {
