@@ -37,13 +37,9 @@ var INFO =
                 open at this moment.
             </p>
             <p>
-                You can follow that tab by cofirming the massage by &lt;CR&gt;, Y, y.
-                If you not confirm the tab to the righthandside will be displayed.
-            </p>
-            <p>
                 A groupname, that is not listed, will be handled as a new group
                 with a new name assumed you confirm the prompt.
-                [Y/n/b] is for yes(default), no and background.
+                [Y/n/b] for yes(default), no and background.
             </p>
         </description>
     </item>
@@ -52,7 +48,7 @@ var INFO =
         <spec>:tgroup-delete <oa>GroupName</oa></spec>
         <description>
             This is deleting the given tabgroup incl. its items.
-        </description>    
+        </description>
     </item>
 </plugin>;
 
@@ -60,20 +56,19 @@ var INFO =
 
 let TabGroupie = {
     init: function init(){
-        try{
             if (!("_groups" in tabs)){
                 if (window.TabView && TabView._initFrame)
                     TabView._initFrame();
 
                 let iframe = document.getElementById("tab-view");
-                tabs._groups = iframe ? iframe.contentWindow.GroupItems.groupItems : null;
+                tabs._groups = iframe ? iframe.contentWindow : null;
                 if (tabs._groups){
                     util.waitFor(function () tabs._groups.TabItems, tabs);
                 }
             }
 
             this.TabGroups = new Array();
-            for (let x in tabs._groups.GroupItems.groupItems){
+            for (let x = 0; x < tabs._groups.GroupItems.groupItems.length; x+=1){
                 if (tabs._groups.GroupItems.groupItems[x]._children.length === 0){
                     tabs._groups.GroupItems.groupItems[x].close();
                     continue;
@@ -83,10 +78,6 @@ let TabGroupie = {
                             };
                 this.TabGroups.push(group);
             }
-        }
-        catch(err){
-            dactyl.echoerr("FATAL - Init failed");
-        }
     },
 
 
@@ -99,7 +90,7 @@ let TabGroupie = {
         commandline.input("Group does not exist. Create? [Y/n/b] ", check, {argCount: "1"});
 
         function check(args){
-            if (args.length === 0 
+            if ( args.length === 0
                 || "" + args[0] === "y"
                 || "" + args[0] === "Y"
                 || "" + args[0] === "b" ){
@@ -111,8 +102,8 @@ let TabGroupie = {
 
                 tabs.selectAlternateTab();
             }
-        }
         return null;
+        }
     },
 
 
@@ -177,7 +168,7 @@ try{
     TabGroupie.init();
 }
 catch (err){
-    dactyl.echoerr("FATAL - Init failed");
+    dactyl.echoerr("Tabgroupie.init() failed");
 }
 
 group.commands.add(["tgroup-c[hange]", "tgc"],
