@@ -192,7 +192,7 @@ group.commands.add(["tgroup-t[itle]", "tgt"],
                         TabGroupie.init();
                     },
                     {
-                        argCount: "0",
+                        argCount: "1",
                     });
 
 group.commands.add(["tgroup-n[ew]", "tgn"],
