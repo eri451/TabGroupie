@@ -56,28 +56,28 @@ var INFO =
 
 let TabGroupie = {
     init: function init(){
-            if (!("_groups" in tabs)){
-                if (window.TabView && TabView._initFrame)
-                    TabView._initFrame();
+        if (!("_groups" in tabs)){
+            if (window.TabView && TabView._initFrame)
+                TabView._initFrame();
 
-                let iframe = document.getElementById("tab-view");
-                tabs._groups = iframe ? iframe.contentWindow : null;
-                if (tabs._groups){
-                    util.waitFor(function () tabs._groups.TabItems, tabs);
-                }
+            let iframe = document.getElementById("tab-view");
+            tabs._groups = iframe ? iframe.contentWindow : null;
+            if (tabs._groups){
+                util.waitFor(function () tabs._groups.TabItems, tabs);
             }
+        }
 
-            this.TabGroups = new Array();
-            for (let x = 0; x < tabs._groups.GroupItems.groupItems.length; x+=1){
-                if (tabs._groups.GroupItems.groupItems[x]._children.length === 0){
-                    tabs._groups.GroupItems.groupItems[x].close();
-                    continue;
-                }
-                let group = {"id":    tabs._groups.GroupItems.groupItems[x].id,
-                             "title": tabs._groups.GroupItems.groupItems[x].getTitle()
-                            };
-                this.TabGroups.push(group);
+        this.TabGroups = new Array();
+        for (let x = 0; x < tabs._groups.GroupItems.groupItems.length; x+=1){
+            if (tabs._groups.GroupItems.groupItems[x]._children.length === 0){
+                tabs._groups.GroupItems.groupItems[x].close();
+                continue;
             }
+            let group = {"id":    tabs._groups.GroupItems.groupItems[x].id,
+                         "title": tabs._groups.GroupItems.groupItems[x].getTitle()
+                        };
+            this.TabGroups.push(group);
+        }
     },
 
 
