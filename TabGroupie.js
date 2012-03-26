@@ -74,7 +74,8 @@ let TabGroupie = {
                 continue;
             }
             let group = {"id":    tabs._groups.GroupItems.groupItems[x].id,
-                         "title": tabs._groups.GroupItems.groupItems[x].getTitle()
+                         "title": (tabs._groups.GroupItems.groupItems[x].getTitle() === "") ?
+                                  "unnamed" : tabs._groups.GroupItems.groupItems[x].getTitle()
                         };
             this.TabGroups.push(group);
         }
