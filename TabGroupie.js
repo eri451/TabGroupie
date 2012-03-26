@@ -11,8 +11,7 @@ var INFO =
     <project name="Pentadactyl" min-version="1.0b7.2"/>
     <p>
         This plugin allows you to create tabgroups,
-        rename or delete them and move the currently use tab from group to group
-        with pentadactyl.
+        rename or delete them and move the currently use tab from group to group.
     </p>
     <item>
         <tags>:tgt :tgroup-title </tags>
@@ -75,7 +74,7 @@ let TabGroupie = {
             }
             let group = {"id":    tabs._groups.GroupItems.groupItems[x].id,
                          "title": (tabs._groups.GroupItems.groupItems[x].getTitle() === "") ?
-                                  "unnamed" : tabs._groups.GroupItems.groupItems[x].getTitle()
+                                  "Buffers" : tabs._groups.GroupItems.groupItems[x].getTitle()
                         };
             this.TabGroups.push(group);
         }
