@@ -72,9 +72,10 @@ let TabGroupie = {
                 tabs._groups.GroupItems.groupItems[x].close();
                 continue;
             }
-            let group = {"id":    tabs._groups.GroupItems.groupItems[x].id,
-                         "title": (tabs._groups.GroupItems.groupItems[x].getTitle() === "") ?
-                                  "Buffers" : tabs._groups.GroupItems.groupItems[x].getTitle()
+            let id = tabs._groups.GroupItems.groupItems[x].id;
+            let title = tabs._groups.GroupItems.groupItems[x].getTitle();
+            let group = {"id":    id,
+                         "title": (title === "") ? "" + id : title,
                         };
             this.TabGroups.push(group);
         }
