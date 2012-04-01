@@ -149,10 +149,7 @@ let TabGroupie = {
             for (let i = 0; i < items.length; i+=1) {
                 let item = items[i];
                 if (item.id === TabGroupie.getIdByTitle(title)){
-                    let children = item.getChildren();
-                    for (let x = 0; x < children.length; x+=1){
-                        children[x].close(true); //close group if last tab
-                    }
+                    item.closeAll();
                     break;
                 }
             }
