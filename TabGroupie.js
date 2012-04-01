@@ -148,11 +148,12 @@ let TabGroupie = {
             let items = GroupItems.groupItems;
             for (let i = 0; i < items.length; i+=1) {
                 let item = items[i];
-                if (item.id === this.getIdByTitle(title)){
+                if (item.id === TabGroupie.getIdByTitle(title)){
                     let children = item.getChildren();
-                    for (let x; x < children.length; x+=1){
+                    for (let x = 0; x < children.length; x+=1){
                         children[x].close(true); //close group if last tab
                     }
+                    break;
                 }
             }
         });
