@@ -127,7 +127,7 @@ let TabGroupie = {
 
     changeTitle: function changeTitle(newTitle){
         tabs.getGroups( function ({ GroupItems }) {
-            activeGroup = GroupItems.getActiveGroupItem();
+            let activeGroup = GroupItems.getActiveGroupItem();
             activeGroup.setTitle(newTitle);
         });
     },
