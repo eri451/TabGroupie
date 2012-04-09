@@ -155,6 +155,21 @@ let TabGroupie = {
             }
         });
     },
+
+    switchto: function switchto(title){
+        tabs.getGroups( function ({ GroupItems }) {
+            let items = GroupItems.groupItems;
+            for (let i = 0; i < items.length; i+=1) {
+                let item = items[i];
+                if (item.id === TabGroupie.getIdByTitle(title)){
+                    let activeTab = item.getActiveTab();
+                    let index = tabs.allTabs.indexOf(activeTab.tab);
+                    config.tabbrowser.mTabContainer.selectedIndex = index;
+                    break;
+                }
+            }
+        });
+    },
 }
 
 try{
@@ -204,6 +219,20 @@ group.commands.add(["tgroup-d[elete]", "tgd"],
                     "delete a tabgroup incl. its items",
                     function (args) {
                         TabGroupie.deleter("" + args[0]);
+                        TabGroupie.init();
+                    },
+                    {
+                        argCount: "1",
+                        completer: function (context) {   //thanks to Kris Maglione
+                            context.keys = { text: "title", description: "id" };
+                            context.completions = TabGroupie.TabGroups;
+                        }
+                    });
+
+group.commands.add(["tgroup-s[witch]", "tgs"],
+                    "switch to first tab of a specified group",
+                    function (args){
+                        TabGroupie.switchto("" + args[0]);
                         TabGroupie.init();
                     },
                     {
