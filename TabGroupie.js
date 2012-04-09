@@ -2,7 +2,7 @@
 XML.ignoreWhitespace = false;
 XML.prettyPrinting   = false;
 var INFO =
-<plugin name="TapGroupie" version="0.9"
+<plugin name="TabGroupie" version="0.9"
         href="https://github.com/eri451/TabGroupie"
         summary="TabGroupie Plugin"
         xmlns={NS}>
