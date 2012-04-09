@@ -14,20 +14,6 @@ var INFO =
         rename or delete them and move the currently use tab from group to group.
     </p>
     <item>
-        <tags>:tgt :tgroup-title </tags>
-        <spec>:tgroup-title <oa>newName</oa></spec>
-        <description>
-            Sets a new title to the currently used group
-        </description>
-    </item>
-    <item>
-       <tags>:tgn :tgroup-new</tags>
-       <spec>:tgroup-new <oa>newGroupname</oa></spec>
-       <description>
-            Create a new tabgroup.
-       </description>
-    </item>
-    <item>
         <tags>:tgc :tgroup-change</tags>
         <spec>:tgroup-change <oa>targetGroup</oa></spec>
         <description>
@@ -47,6 +33,27 @@ var INFO =
         <spec>:tgroup-delete <oa>GroupName</oa></spec>
         <description>
             This is deleting the given tabgroup incl. its items.
+        </description>
+    </item>
+    <item>
+       <tags>:tgn :tgroup-new</tags>
+       <spec>:tgroup-new <oa>newGroupname</oa></spec>
+       <description>
+            Create a new tabgroup.
+       </description>
+    </item>
+    <item>
+        <tags>:tgs :tgroup-switch </tags>
+        <spec>:tgroup-switch <oa>targetGroup</oa></spec>
+        <description>
+            switch to last viewed tab of a specified group
+        </description>
+    </item>
+    <item>
+        <tags>:tgt :tgroup-title </tags>
+        <spec>:tgroup-title <oa>newName</oa></spec>
+        <description>
+            Sets a new title to the currently used group
         </description>
     </item>
 </plugin>;
@@ -230,7 +237,7 @@ group.commands.add(["tgroup-d[elete]", "tgd"],
                     });
 
 group.commands.add(["tgroup-s[witch]", "tgs"],
-                    "switch to first tab of a specified group",
+                    "switch to last viewed tab of a specified group",
                     function (args){
                         TabGroupie.switchto("" + args[0]);
                         TabGroupie.init();
