@@ -111,7 +111,7 @@ let TabGroupie = {
         }
 
         if (targetGroupId != null){
-            if (activeTab._tabViewTabItem.parent._children.length > 1){
+            if (tabs.visibleTabs.length > 1){
                 TabView.moveTabTo(activeTab, targetGroupId);
                 TabView.hide();
                 commandline.input("Switch to that Group? [Y/n] ", ask, {argCount: "1"})
@@ -126,7 +126,10 @@ let TabGroupie = {
 
 
     changeTitle: function changeTitle(newTitle){
-        window.gBrowser.selectedTab._tabViewTabItem.parent.setTitle(newTitle);
+        tabs.getGroups( function ({ GroupItems }) {
+            activeGroup = GroupItems.getActiveGroupItem();
+            activeGroup.setTitle(newTitle);
+        });
     },
 
 
