@@ -36,6 +36,13 @@ var INFO =
         </description>
     </item>
     <item>
+        <tags>:tgg :tgroup-get</tags>
+        <spec>:tgroup-get <oa>TabIndex</oa></spec>
+        <description>
+            This moves a tab to the current group.
+        </description>
+    </item>
+    <item>
        <tags>:tgn :tgroup-new</tags>
        <spec>:tgroup-new <oa>newGroupname</oa></spec>
        <description>
