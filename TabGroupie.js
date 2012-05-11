@@ -14,12 +14,11 @@ var INFO =
         rename or delete them and move the currently use tab from group to group.
     </p>
     <item>
-        <tags>:tgc :tgroup-change</tags>
-        <spec>:tgroup-change <oa>targetGroup</oa></spec>
+        <tags>:tgc :tgroup-move</tags>
+        <spec>:tgroup-move <oa>targetGroup</oa></spec>
         <description>
             <p>
-                Changes the specified group for the tab that is
-                open at this moment.
+                Move the current tab to the specified group.
             </p>
             <p>
                 A groupname, that is not listed, will be handled as a new group
@@ -111,25 +110,12 @@ let TabGroupie = {
         let activeTab = window.gBrowser.selectedTab;
         let targetGroupId = this.getIdByTitle(TargetGroupTitle);
 
-        function ask(args){
-            if (args.length === 0
-                || "" + args[0] === "y"
-                || "" + args[0] === "Y"){ tabs.selectAlternateTab();}
-        }
-
         if (targetGroupId != null){
-            if (tabs.visibleTabs.length > 1){
-                TabView.moveTabTo(activeTab, targetGroupId);
-                TabView.hide();
-                commandline.input("Switch to that Group? [Y/n] ", ask, {argCount: "1"})
-            }
-            else{
-                TabView.moveTabTo(activeTab, targetGroupId);
-                TabView.hide();
-                tabs.selectAlternateTab();
-            }
+            TabView.moveTabTo(activeTab, targetGroupId);
+            TabView.hide();
+            tabs.selectAlternateTab();
         }
-   },
+    },
 
 
     changeTitle: function changeTitle(newTitle){
@@ -207,7 +193,7 @@ catch (err){
     dactyl.echoerr("Tabgroupie.init() failed");
 }
 
-group.commands.add(["tgroup-c[hange]", "tgc"],
+group.commands.add(["tgroup-mo[ve]", "tgm"],
                     "Change current tab to another group.",
                     function (args){
                         TabGroupie.changeGroup("" + args[0]);
