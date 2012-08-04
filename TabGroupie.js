@@ -160,18 +160,30 @@ let TabGroupie = {
     },
 
     switchto: function switchto(title){
-        tabs.getGroups( function ({ GroupItems }) {
-            let items = GroupItems.groupItems;
-            for (let i = 0; i < items.length; i+=1) {
-                let item = items[i];
-                if (item.id === TabGroupie.getIdByTitle(title)){
-                    let activeTab = item.getActiveTab();
-                    let index = tabs.allTabs.indexOf(activeTab.tab);
-                    config.tabbrowser.mTabContainer.selectedIndex = index;
-                    break;
+        if (title){
+            tabs.getGroups( function ({ GroupItems }) {
+                let items = GroupItems.groupItems;
+                for (let i = 0; i < items.length; i+=1) {
+                    let item = items[i];
+                    if (item.id === TabGroupie.getIdByTitle(title)){
+//                        alert(item.id);
+                        let activeTab = item.getActiveTab();
+                        let index = tabs.allTabs.indexOf(activeTab.tab);
+                        config.tabbrowser.mTabContainer.selectedIndex = index;
+                        break;
+                    }
                 }
-            }
-        });
+            });
+        }else{
+//            alert("yep your are in the else");
+            tabs.getGroups( function ({ GroupItems }) {
+                let lastGroup = GroupItems.getLastActiveGroupItem();
+//                alert(lastGroup.id);
+                let activeTab = lastGroup.getActiveTab();
+                let index = tabs.allTabs.indexOf(activeTab.tab);
+                config.tabbrowser.mTabContainer.selectedIndex = index;
+            });
+        }
     },
 
     getTab: function getTab(index){
@@ -246,11 +258,16 @@ group.commands.add(["tgroup-d[elete]", "tgd"],
 group.commands.add(["tgroup-s[witch]", "tgs"],
                     "switch to last viewed tab of a specified group",
                     function (args){
-                        TabGroupie.switchto("" + args[0]);
+                        if (args[0] != undefined){
+//                            alert("arg:" +  args[0]);
+                            TabGroupie.switchto("" + args[0]);
+                        }else{
+                            TabGroupie.switchto();          // go to last active Group
+                        }
                         TabGroupie.init();
                     },
                     {
-                        argCount: "1",
+                        argCount: "?",
                         completer: function (context) {   //thanks to Kris Maglione
                             context.keys = { text: "title", description: "id" };
                             context.completions = TabGroupie.TabGroups;
