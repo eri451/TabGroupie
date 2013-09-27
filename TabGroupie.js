@@ -1,69 +1,57 @@
-/* "use strict"; */
-XML.ignoreWhitespace = false;
-XML.prettyPrinting   = false;
+"use strict";
 var INFO =
-<plugin name="TabGroupie" version="0.9"
-        href="https://github.com/eri451/TabGroupie"
-        summary="TabGroupie Plugin"
-        xmlns={NS}>
-    <author email="hans.orter@gmx.de">Eri!</author>
-    <license href="http://opensource.org/licenses/mit-license.php">MIT</license>
-    <project name="Pentadactyl" min-version="1.0b7.2"/>
-    <p>
-        This plugin allows you to create tabgroups,
-        rename or delete them and move the currently use tab from group to group.
-    </p>
-    <item>
-        <tags>:tgc :tgroup-move</tags>
-        <spec>:tgroup-move <oa>targetGroup</oa></spec>
-        <description>
-            <p>
-                Move the current tab to the specified group.
-            </p>
-            <p>
-                A groupname, that is not listed, will be handled as a new group
-                with a new name assumed you confirm the prompt.
-                [Y/n/b] for yes(default), no and background.
-            </p>
-        </description>
-    </item>
-    <item>
-        <tags>:tgd :tgroup-delete</tags>
-        <spec>:tgroup-delete <oa>GroupName</oa></spec>
-        <description>
-            This is deleting the given tabgroup incl. its items.
-        </description>
-    </item>
-    <item>
-        <tags>:tgg :tgroup-get</tags>
-        <spec>:tgroup-get <oa>TabIndex</oa></spec>
-        <description>
-            This moves a tab to the current group.
-        </description>
-    </item>
-    <item>
-       <tags>:tgn :tgroup-new</tags>
-       <spec>:tgroup-new <oa>newGroupname</oa></spec>
-       <description>
-            Create a new tabgroup.
-       </description>
-    </item>
-    <item>
-        <tags>:tgs :tgroup-switch </tags>
-        <spec>:tgroup-switch <oa>targetGroup</oa></spec>
-        <description>
-            switch to last viewed tab of a specified group
-        </description>
-    </item>
-    <item>
-        <tags>:tgt :tgroup-title </tags>
-        <spec>:tgroup-title <oa>newName</oa></spec>
-        <description>
-            Sets a new title to the currently used group
-        </description>
-    </item>
-</plugin>;
+["plugin", { name: "TabGroupie", version: "0.9.1",
+             href: "https://github.com/eri451/TabGroupie",
+             summary: "TabGroupie Plugin", xmlns: "dactyl" },
+    ["author", { email: "hans.orter@gmx.de"},
+        "eri!" ],
+    ["license", { href: "http://opensource.org/licenses/mit-license.php" },
+        "MIT" ],
+    ["project", { name: "Pentadactyl",  "min-version": "1.0b7.2" }],
+    ["p", {},
+        "This plugin allows you to create tabgroups, rename or delete them and",
+        "move the currently use tab from group to group."],
 
+    ["item", {},
+        ["tags", {}, ":tgc :tgroup-move"],
+        ["spec", {}, ":tgroup-move ", ["oa", {}, "targetGroup"]],
+        ["description", {},
+            ["p", {},
+                "Move the current tab to the specified group."],
+            ["p", {},
+                "A groupname, that is not listed, will be handled as a new ",
+                "group with a new name assumed you confirm the prompt. ",
+                "[Y/n/b] for yes(default), no and background."]]],
+
+    ["item", {},
+        ["tags", {}, ":tgd :tgroup-delete"],
+        ["spec", {}, ":tgroup-delete ", ["oa", {}, "GroupName"]],
+        ["description", {},
+            "This is deleting the given tabgroup incl. its items."]],
+
+    ["item", {},
+        ["tags" ,{}, ":tgg :tgroup-get"],
+        ["spec", {}, ":tgroup-get ", ["oa", {}, "TabIndex"]],
+        ["description", {},
+            "This moves a tab to the current group."]],
+
+    ["item", {},
+       ["tags" ,{}, ":tgn :tgroup-new"],
+       ["spec", {}, ":tgroup-new ", ["oa", {}, "newGroupname"]],
+       ["description", {},
+            "Create a new tabgroup."]],
+
+    ["item", {},
+        ["tags", {}, ":tgs :tgroup-switch"],
+        ["spec", {}, ":tgroup-switch ", ["oa", {}, "targetGroup"]],
+        ["description", {},
+            "switch to last viewed tab of a specified group."]],
+
+    ["item", {},
+        ["tags", {}, ":tgt :tgroup-title"],
+        ["spec", {}, ":tgroup-title ", ["oa", {}, "newName"]],
+        ["description", {},
+            "Sets a new title to the currently used group."]]];
 
 
 let TabGroupie = {
