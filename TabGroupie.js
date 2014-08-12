@@ -125,6 +125,7 @@ let TabGroupie = {
     },
 
 
+
     createGroup: function createGroup(title, callback){
         tabs.getGroups( function ({ GroupItems }) {
             let newGroup = GroupItems.newGroup();
@@ -273,4 +274,20 @@ group.commands.add(["tgroup-g[et]", "tgg"],
                         completer: function (context) {
                             completion.buffer(context);
                         }
-                    });
+		    });
+group.commands.add(["tgroup-o[pen]", "tgo"],
+                    "open a new tab to a new group",
+                    function (args){						
+                        TabGroupie.newTabGroup( args[0].substring(0,6) + '...', null , function (tab) {
+                            window.gBrowser.selectedTab = tab;
+                        });
+						dactyl.open(args[0] || "about:blank");
+						TabGroupie.init();
+					},
+					{
+						bang: true,
+						completer: function (context) completion.url(context),
+						domains: function (args) commands.get("open").domains(args),
+						literal: 0,
+						privateData: true
+					});
