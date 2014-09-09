@@ -18,6 +18,7 @@ and it will work with these six commands:
     tgroup-new    [NEWGROUPTITLE]
     tgroup-switch [TARGETGROUPTITLE]
     tgroup-title  [NEWTITLE]
+    tgroup-open   [param the same as open]
 after restarting pentadactyl.
 
 uninstall:
